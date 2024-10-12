@@ -1,13 +1,18 @@
 {
     "version": 2,
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.6.0"
+    "builds": [
+        {
+            "src": "api/index.php",
+            "use": "@vercel/php"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
         }
-    },
+    ],
     "routes": [
         {
-            "src": "/(css|js)/(.*)",
+            "src": "/(css|js|images)/(.*)",
             "dest": "/public/$1/$2"
         },
         {
@@ -28,15 +33,5 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
-    },
-    "builds": [
-        {
-            "src": "api/index.php",
-            "use": "@vercel/php"
-        },
-        {
-            "src": "public/**",
-            "use": "@vercel/static"
-        }
-    ]
+    }
 }
