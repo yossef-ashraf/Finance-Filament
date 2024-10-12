@@ -7,6 +7,10 @@
     },
     "routes": [
         {
+            "src": "/(css|js)/(.*)",
+            "dest": "/public/$1/$2"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
@@ -24,5 +28,15 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
-    }
+    },
+    "builds": [
+        {
+            "src": "api/index.php",
+            "use": "@vercel/php"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
+        }
+    ]
 }
