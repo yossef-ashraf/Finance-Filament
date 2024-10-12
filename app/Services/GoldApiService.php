@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class GoldApiService
 {
-    protected $apiKey = "goldapi-6000u1sm26alp0a-io";
+    protected $apiKey = 'goldapi-6000u1sm26alp0a-io';
     protected $baseUrl = "https://www.goldapi.io/api/";
 
     public function getGoldPrices($symbol = 'XAU', $currency = 'EGP')
