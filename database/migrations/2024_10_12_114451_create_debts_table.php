@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('amount');
-            $table->text('note');
+            $table->text('note')->nullable();
+            $table->integer('type')->default(1);
             $table->foreignId('month_id')->constrained()->onDelete('cascade'); // Foreign key referencing months table
+            // $table->dateTime('date');
             $table->timestamps();
         });
     }
