@@ -41,11 +41,13 @@ class GoldApiService
 
     private function updateGoldPrice($name, $pricePerGram)
     {
-        $investment = InvestmentAndSavings::where('name', $name)->first();
-        if ($investment) {
+        $investments = InvestmentAndSavings::where('name', $name)->get();
+        if ($investments) {
+            foreach ($investments as $investment) {
             $investment->update([
                 'amount' => $pricePerGram * floatval($investment->val),
             ]);
+        }
         }
     }
 }
