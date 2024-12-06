@@ -17,12 +17,22 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationItem;
+use App\Exports\FinancialReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->navigationItems([
+                NavigationItem::make('Export Financial Report Information')
+                    ->icon('heroicon-o-cube-transparent')
+                    ->url(url('/export/financial-report'))
+                    ->sort(100)
+                    // ->shouldOpenInNewTab(true), // Optional: open in new tab
+            ])
             ->default()
             ->id('admin')
             ->path('admin')
@@ -44,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                // Uncomment if needed
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
             ])
@@ -59,6 +70,7 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
+                // Uncomment if authentication is required
                 // Authenticate::class,
             ]);
     }
