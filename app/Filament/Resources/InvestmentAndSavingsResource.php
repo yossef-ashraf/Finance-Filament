@@ -29,10 +29,13 @@ class InvestmentAndSavingsResource extends Resource
                 ->maxLength(255),
             Forms\Components\TextInput::make('val')
                 ->nullable(),
+            Forms\Components\TextInput::make('price')
+                ->nullable(),
             Forms\Components\TextInput::make('amount')
                 ->nullable(),
             Forms\Components\Textarea::make('note')
                 ->nullable(),
+
             ]);
     }
 
@@ -41,11 +44,13 @@ class InvestmentAndSavingsResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->label('Name'),
-                TextColumn::make('val')->label('Value')->sortable(),
-                TextColumn::make('amount')->label('Amount')->sortable(),
+                TextColumn::make('val')->label('Value')  ->icon('heroicon-m-sparkles')->suffix(' g')->sortable(),
+                TextColumn::make('price')->label('Price')->icon('heroicon-m-document-currency-dollar')->money('EGP')->sortable(),
+                TextColumn::make('amount')->label('Amount')->icon('heroicon-m-currency-dollar')->money('EGP')->sortable(),
+
                 TextColumn::make('note')->label('Note'),
-                TextColumn::make('created_at')->label('Created At')->dateTime(),
-                TextColumn::make('updated_at')->label('Updated At')->dateTime(),
+                // TextColumn::make('created_at')->label('Created At')->dateTime(),
+                // TextColumn::make('updated_at')->label('Updated At')->dateTime(),
             ])
             ->filters([
                 //
@@ -57,7 +62,7 @@ class InvestmentAndSavingsResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

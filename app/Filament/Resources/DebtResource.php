@@ -36,7 +36,14 @@ class DebtResource extends Resource
                 //     ->thousandsSeparator(',')
                 // ),
             Forms\Components\Textarea::make('note')
-                ->maxLength(65535)->required(),
+                ->maxLength(65535),
+            Forms\Components\Select::make('type')
+                ->options([
+                    1=>'Debt',
+                    2=>'Investment',
+                    0=>'Other',
+                ])
+                ->required(),
             Forms\Components\Select::make('month_id')
             ->options(Month::all()->pluck('name', 'id'))
             ->required(),
@@ -49,12 +56,25 @@ class DebtResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable(),
                 Tables\Columns\TextColumn::make('amount')
-                    ->money('EGP')->sortable(),
-                Tables\Columns\TextColumn::make('note')->sortable(),
+                ->icon('heroicon-m-chart-pie')->money('EGP')->sortable(),
+                Tables\Columns\TextColumn::make('type')
+                ->formatStateUsing(fn ($record): string => match ($record->type) {
+                    1 => 'Debt',
+                    2 => 'Investment',
+                    0 => 'Other',
+                    default => 'Unknown',
+                })    ->badge()
+                ->color(fn ($record): string => match ($record->type) {
+                    1 => 'danger',
+                    2  => 'success',
+                    0 => 'warning',
+                }),
+            
+                Tables\Columns\TextColumn::make('note')->icon('heroicon-m-document-currency-dollar')->sortable(),
                 Tables\Columns\TextColumn::make('month.month')->sortable(),
-                Tables\Columns\TextColumn::make('month.year')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()->sortable(),
+                Tables\Columns\TextColumn::make('month.year')->label('Year')->sortable(),
+                // Tables\Columns\TextColumn::make('created_at')
+                //     ->dateTime()->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -85,7 +105,7 @@ class DebtResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array
