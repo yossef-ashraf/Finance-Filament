@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class MonthlyCreditsChartWidget extends BarChartWidget
 {
     protected static bool $isDiscovered = false;
+    
     protected static ?string $heading = 'الإيرادات الشهرية';
 
     protected function getData(): array
