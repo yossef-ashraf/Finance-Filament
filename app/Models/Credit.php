@@ -11,6 +11,7 @@ class Credit extends Model
     protected $fillable = [
         'name',
         'amount',
+        'type',
         'note',
         'month_id',
     ];

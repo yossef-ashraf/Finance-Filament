@@ -12,6 +12,7 @@ class Debt extends Model
         'name',
         'amount',
         'note',
+        'type',
         'month_id',
     ];
 

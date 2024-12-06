@@ -13,5 +13,6 @@ class InvestmentAndSavings extends Model
         'val',
         'amount',
         'note',
+        'price'
     ];
 }
