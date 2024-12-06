@@ -36,9 +36,6 @@
 </table>
 
 
-
-
-
 <h3>Total Financial Report {{ Carbon\Carbon::now()->year }}</h3>
 <table class="table table-bordered">
         <thead>
@@ -75,46 +72,71 @@
 </table>
 
 
-
-
-
 <h3>Financial Report for {{ Carbon\Carbon::now()->year }}</h3>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Year</th>
-                <th>Month</th>
-                <th>Total Monthly Revenues</th>
-                <th>Monthly Liabilities</th>
-                <th>Monthly Investments</th>
-                <th>Other Monthly Expenses</th>
-                <th>Monthly Balance</th>
-                <th>Monthly Balance Percentage</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($monthsCurrentYear as $month)
-            <tr>
-                <td>{{ $month->year }}</td>
-                <td>{{ $month->month }}</td>
-                <td>{{ $month->credits->sum('amount') }}</td>
-                <td>{{ $month->debts->where('type', 1)->sum('amount') }}</td>
-                <td>{{ $month->debts->where('type', 2)->sum('amount') }}</td>
-                <td>{{ $month->debts->where('type', 0)->sum('amount') }}</td>
-                <td>{{ $month->credits->sum('amount') - $month->debts->sum('amount') }}</td>
-                <td>{{ calculateBalancePercentage($month) }}%</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Total Monthly Revenues</th>
+            <th>Monthly Liabilities</th>
+            <th>Monthly Investments</th>
+            <th>Other Monthly Expenses</th>
+            <th>Monthly Balance</th>
+            <th>Monthly Balance Percentage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($monthsCurrentYear as $month)
+        <tr>
+            <td>{{ $month->year }}</td>
+            <td>{{ $month->month }}</td>
+            <td>{{ $month->credits->sum('amount') }}</td>
+            <td>{{ $month->debts->where('type', 1)->sum('amount') }}</td>
+            <td>{{ $month->debts->where('type', 2)->sum('amount') }}</td>
+            <td>{{ $month->debts->where('type', 0)->sum('amount') }}</td>
+            <td>{{ $month->credits->sum('amount') - $month->debts->sum('amount') }}</td>
+            <td>{{ calculateBalancePercentage($month) }}%</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
 
 
+<h3> Financial Analysis Report Detailed</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Credits</th>
+            <th>Debt</th>
+            <th>Cach</th>
+            
+            <th>Investment And Savings Amount</th>
+            <th>Investment And Savings Price</th>
+            <th>Balance Investment</th>
 
+            <th>Balance Amount</th>
 
+        </tr>
+    </thead>
+    <tbody>
 
+        <tr>
+            <td>{{ $totalCredits }}</td>
+            <td>{{ $totalDebtAmount }}</td>
+            <td>{{ $cach }}</td>
+
+            <td>{{ $totalInvestmentAndSavingsAmount }}</td>
+            <td>{{ $totalInvestmentAndSavingsPrice }}</td>
+            <td>{{ $balanceInvestment }}</td>
+
+            <td>{{ $balance }}</td>
+
+        </tr>
+
+    </tbody>
+</table>
 
 
 
