@@ -70,6 +70,7 @@ class ExpenseRatioWidget extends PieChartWidget
 
     public function getDescription(): string
     {
+        $currentYear = now()->year;
         $totalCredits = Credit::        whereHas(
             'month',
             fn ($query) => $query->where('year', $currentYear)

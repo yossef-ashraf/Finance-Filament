@@ -12,6 +12,7 @@ class ExpenseDistributionWidget extends PieChartWidget
 
     protected function getData(): array
     {
+        $currentYear = now()->year;
         // Collect and group debts for detailed breakdown
         $debts = Debt::
             whereHas(
@@ -93,6 +94,7 @@ class ExpenseDistributionWidget extends PieChartWidget
     // Provide additional chart description
     public function getDescription(): string
     {
+        $currentYear = now()->year;
         $totalDebts = Debt::        whereHas(
             'month',
             fn ($query) => $query->where('year', $currentYear)
