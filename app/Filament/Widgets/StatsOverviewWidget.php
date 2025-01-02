@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Credit;
 use App\Models\Debt;
 use App\Models\InvestmentAndSavings;
+use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
 
@@ -14,13 +15,37 @@ class StatsOverviewWidget extends BaseWidget
     
     protected function getCards(): array
     {
-        $totalCredits = Credit::sum('amount');
+        $currentYear = Carbon::now()->year;
         
-        // Calculate amounts for each type of Debt
+        $totalCredits = Credit::sum('amount');
         $totalDebtAmount = Debt::where('type', 1)->sum('amount');
         $totalInvestmentAmount = Debt::where('type', 2)->sum('amount');
         $totalOtherAmount = Debt::where('type', 0)->sum('amount');
         
+        $totalCreditsCurrentYear = Credit::whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->sum('amount');
+        $totalDebtAmountCurrentYear = Debt::
+        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->
+        where('type', 1)->sum('amount');
+        $totalInvestmentAmountCurrentYear = Debt::
+        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->
+        where('type', 2)->sum('amount');
+        $totalOtherAmountCurrentYear = Debt::
+        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->
+        where('type', 0)->sum('amount');
+        
+
         // Calculate amounts for InvestmentAndSavings
         $totalInvestmentAndSavingsAmount = InvestmentAndSavings::sum('amount'); 
         $totalInvestmentAndSavingsPrice = InvestmentAndSavings::sum('price');
@@ -48,7 +73,32 @@ class StatsOverviewWidget extends BaseWidget
                 ->description('Total other amounts')
                 ->descriptionIcon('heroicon-s-document')
                 ->color('info'),
-                
+
+
+            // ----------------------------------------------
+
+            Card::make("Total Revenue {$currentYear} ", number_format($totalCreditsCurrentYear, 2) . ' EGP')
+            ->description("Total revenue sum {$currentYear} ")
+            ->descriptionIcon("heroicon-s-currency-dollar")
+            ->color("success"),
+            
+            Card::make("Debts {$currentYear} ", number_format($totalDebtAmountCurrentYear, 2) . ' EGP')
+                ->description("Total Debts Sum {$currentYear} ")
+                ->descriptionIcon("heroicon-s-credit-card")
+                ->color("danger"),
+            
+            Card::make("Investments {$currentYear} ", number_format($totalInvestmentAmountCurrentYear, 2) . ' EGP')
+                ->description("Total Investments Sum {$currentYear} ")
+                ->descriptionIcon("heroicon-s-scale")
+                ->color("warning"),
+            
+            Card::make("Other Amounts {$currentYear} ", number_format($totalOtherAmountCurrentYear, 2) . ' EGP')
+                ->description("Total other amounts {$currentYear} ")
+                ->descriptionIcon("heroicon-s-document")
+                ->color("info"),
+
+
+            // ---------------------------------------------- 
             Card::make('Current Balance', number_format($balance, 2) . ' EGP')
                 ->description('Difference between revenue and expenses')
                 ->descriptionIcon('heroicon-s-banknotes')
