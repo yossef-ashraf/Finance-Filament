@@ -12,14 +12,32 @@ class ExpenseRatioWidget extends PieChartWidget
 
     protected function getData(): array
     {
-        $totalCredits = Credit::sum('amount');
+        $currentYear = now()->year;
+        $totalCredits = Credit::
+        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->
+        sum('amount');
         $totalDebts = Debt::sum('amount');
         
         // Breakdown of expenses by type
         $debtTypes = [
-            'Debts' => Debt::where('type', 1)->sum('amount'),
-            'Investments' => Debt::where('type', 2)->sum('amount'),
-            'Other Expenses' => Debt::where('type', 0)->sum('amount')
+            'Debts' => Debt::        
+            whereHas(
+                'month',
+                fn ($query) => $query->where('year', $currentYear)
+            )->where('type', 1)->sum('amount'),
+            'Investments' => Debt::
+            whereHas(
+                'month',
+                fn ($query) => $query->where('year', $currentYear)
+            )->where('type', 2)->sum('amount'),
+            'Other Expenses' => Debt::
+            whereHas(
+                'month',
+                fn ($query) => $query->where('year', $currentYear)
+            )->where('type', 0)->sum('amount')
         ];
 
         $remaining = max(0, $totalCredits - $totalDebts);
@@ -52,8 +70,14 @@ class ExpenseRatioWidget extends PieChartWidget
 
     public function getDescription(): string
     {
-        $totalCredits = Credit::sum('amount');
-        $totalDebts = Debt::sum('amount');
+        $totalCredits = Credit::        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->sum('amount');
+        $totalDebts = Debt::        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->sum('amount');
         $remainingPercentage = $totalCredits > 0 
             ? (($totalCredits - $totalDebts) / $totalCredits) * 100 
             : 0;

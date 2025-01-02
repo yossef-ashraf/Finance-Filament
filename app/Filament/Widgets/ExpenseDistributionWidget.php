@@ -13,7 +13,12 @@ class ExpenseDistributionWidget extends PieChartWidget
     protected function getData(): array
     {
         // Collect and group debts for detailed breakdown
-        $debts = Debt::selectRaw('name, type, SUM(amount) as total')
+        $debts = Debt::
+            whereHas(
+                'month',
+                fn ($query) => $query->where('year', $currentYear)
+            )->
+            selectRaw('name, type, SUM(amount) as total')
             ->groupBy('name', 'type')
             ->orderByDesc('total')
             ->get()
@@ -88,8 +93,14 @@ class ExpenseDistributionWidget extends PieChartWidget
     // Provide additional chart description
     public function getDescription(): string
     {
-        $totalDebts = Debt::sum('amount');
-        $debtTypeSummary = Debt::selectRaw('type, SUM(amount) as total')
+        $totalDebts = Debt::        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->sum('amount');
+        $debtTypeSummary = Debt::        whereHas(
+            'month',
+            fn ($query) => $query->where('year', $currentYear)
+        )->selectRaw('type, SUM(amount) as total')
             ->groupBy('type')
             ->get()
             ->mapWithKeys(function ($item) {
