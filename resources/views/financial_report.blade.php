@@ -43,9 +43,11 @@
                 <th>Year</th>
                 <th>Total Monthly Revenues</th>
                 <th>Total Monthly Liabilities</th>
+
                 <th>Total Monthly Investments</th>
                 <th>Total Other Monthly Expenses</th>
                 <th>Total Monthly Balance</th>
+
                 <th>Monthly Balance Percentage</th>
             </tr>
         </thead>
@@ -70,6 +72,43 @@
             </tr>
         </tbody>
 </table>
+
+<h3> Financial Analysis Report Detailed</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Year</th>
+            <th>Total Credits</th>
+            <th>Total Debt</th>
+            <th>Total Cach</th>
+            
+            <th>Total Investment And Savings Amount</th>
+            <th>Total Investment And Savings Price</th>
+            <th>Total Balance Investment</th>
+
+            <th>Total Balance Amount</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>------</td>
+            <td>{{ $totalCredits }}</td>
+            <td>{{ $totalDebtAmount }}</td>
+            <td>{{ $cach }}</td>
+
+            <td>{{ $totalInvestmentAndSavingsAmount }}</td>
+            <td>{{ $totalInvestmentAndSavingsPrice }}</td>
+            <td>{{ $balanceInvestment }}</td>
+
+            <td>{{ $balance }}</td>
+
+        </tr>
+
+    </tbody>
+</table>
+
 
 
 <h3>Financial Report for {{ Carbon\Carbon::now()->year }}</h3>
@@ -103,40 +142,6 @@
 </table>
 
 
-
-<h3> Financial Analysis Report Detailed</h3>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Credits</th>
-            <th>Debt</th>
-            <th>Cach</th>
-            
-            <th>Investment And Savings Amount</th>
-            <th>Investment And Savings Price</th>
-            <th>Balance Investment</th>
-
-            <th>Balance Amount</th>
-
-        </tr>
-    </thead>
-    <tbody>
-
-        <tr>
-            <td>{{ $totalCredits }}</td>
-            <td>{{ $totalDebtAmount }}</td>
-            <td>{{ $cach }}</td>
-
-            <td>{{ $totalInvestmentAndSavingsAmount }}</td>
-            <td>{{ $totalInvestmentAndSavingsPrice }}</td>
-            <td>{{ $balanceInvestment }}</td>
-
-            <td>{{ $balance }}</td>
-
-        </tr>
-
-    </tbody>
-</table>
 
 
 
