@@ -1,16 +1,22 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "Dockerfile",
-        "use": "@vercel/docker"
+  "version": 2,
+  "regions": [
+      "fra1"
+  ],
+  "functions": {
+      "api/index.php": {
+          "runtime": "vercel-php@0.7.1"
       }
-    ],
-    "routes": [
+  },
+  "routes": [
       {
-        "src": "/(.*)",
-        "dest": "/public/$1"
+          "src": "/build/(.*)",
+          "dest": "/build/$1"
+      },
+      {
+          "src": "/(.*)",
+          "dest": "/api/index.php"
       }
-    ]
-  }
-  
+  ],
+  "outputDirectory": "public"
+}
